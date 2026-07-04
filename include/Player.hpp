@@ -2,29 +2,21 @@
 #define PLAYER_HPP
 
 #include <string>
+#include "Character.hpp"
 
-class Player {
+class Player : public Character {
 public:
-    Player(const std::string& name, int hp, int attack, int defense, int healCharges);
+    Player(const std::string& name, Stats stats, int level, int healCharges)
+        : Character(name, stats, level), healCharges(healCharges), defending(false) {};
 
-    void takeDamage(int damage);
-    int  rollAttack() const;
-    bool isAlive() const;
     void useHeal();
     void setDefending(bool defending);
-    void display() const;
+    void display() const override;
+    void takeDamage(int damage) override;
 
-    const std::string& getName() const;
-    int  getHp() const;
-    int  getMaxHp() const;
     int  getHealCharges() const;
 
 private:
-    std::string name;
-    int hp;
-    int maxHp;
-    int attack;
-    int defense;
     int healCharges;
     bool defending;
 };

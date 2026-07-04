@@ -1,33 +1,19 @@
 #include "Enemy.hpp"
+#include "Combat.hpp"
 #include <algorithm>
 #include <iostream>
 #include <random>
 
-static int rollDice(int min, int max) {
-    static std::mt19937 rng(std::random_device{}());
-    std::uniform_int_distribution<int> dist(min, max);
-    return dist(rng);
+
+Action Enemy::decideAction() const {
+    int roll = combat::rollDice(1, 100);
+    if (roll <= 60) {
+        return Action::Attack;
+    } else if (roll <= 85) {
+        return Action::Defend;
+    } else {
+        return Action::Heal;
+    }
 }
 
-Enemy::Enemy(const std::string& name, int hp, int attack)
-    : name(name), hp(hp), attack(attack) {}
 
-void Enemy::takeDamage(int damage) {
-    hp = std::max(0, hp - damage);
-    std::cout << name << " takes " << damage << " damage!  [HP: " << hp << "]\n";
-}
-
-int Enemy::rollAttack() const {
-    return rollDice(attack - 2, attack + 4);
-}
-
-bool Enemy::isAlive() const {
-    return hp > 0;
-}
-
-void Enemy::display() const {
-    std::cout << "[ " << name << " | HP: " << hp << " | ATK: " << attack << " ]\n";
-}
-
-const std::string& Enemy::getName() const { return name; }
-int                Enemy::getHp()   const { return hp; }

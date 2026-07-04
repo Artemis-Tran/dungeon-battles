@@ -8,12 +8,24 @@ void GameManager::printSeparator() const {
     std::cout << "========================================\n";
 }
 
-Enemy GameManager::makeEnemy(int level) const {
-    switch (level) {
-        case 1: return Enemy("Goblin",       50, 12);
-        case 2: return Enemy("Orc Warrior",  80, 18);
-        case 3: return Enemy("Dark Dragon", 130, 25);
-        default: return Enemy("Shadow",      60, 14);
+Enemy GameManager::makeEnemy(int floor) const {
+    switch (floor) {
+        case 1: return Enemy("Goblin",       Stats{
+                .hp = 100, .attack = 15, .defense = 5, .speed = 10,
+                .critChance = 0.1f, .critDamage = 1.5f
+            }, 1);
+        case 2: return Enemy("Orc Warrior",  Stats{
+                .hp = 120, .attack = 20, .defense = 10, .speed = 8,
+                .critChance = 0.15f, .critDamage = 1.6f
+            }, 2);
+        case 3: return Enemy("Dark Dragon",  Stats{
+                .hp = 150, .attack = 25, .defense = 15, .speed = 12,
+                .critChance = 0.2f, .critDamage = 1.8f
+            }, 3);
+        default: return Enemy("Shadow",      Stats{
+                .hp = 80, .attack = 10, .defense = 3, .speed = 6,
+                .critChance = 0.05f, .critDamage = 1.3f
+            }, 1);
     }
 }
 
@@ -78,7 +90,13 @@ void GameManager::startGame() {
     std::cout << "Enter your hero's name: ";
     std::cin >> heroName;
 
-    Player player(heroName, 100, 15, 5, 3);
+    int startingLevel = 1;
+    int startingHealCharges = 3;
+
+    Player player(heroName, Stats{
+            .hp = 100, .attack = 20, .defense = 10, .speed = 10,
+            .critChance = 0.1f, .critDamage = 1.5f
+        }, startingLevel, startingHealCharges);
     std::cout << "\nWelcome, " << player.getName() << "! You descend into the dungeon...\n";
 
     for (currentLevel = 1; currentLevel <= TOTAL_LEVELS; ++currentLevel) {

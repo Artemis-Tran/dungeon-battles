@@ -2,23 +2,19 @@
 #define ENEMY_HPP
 
 #include <string>
+#include "Character.hpp"
 
-class Enemy {
+enum class Action { Attack, Defend, Heal };
+
+class Enemy : public Character {
 public:
-    Enemy(const std::string& name, int hp, int attack);
-
-    void takeDamage(int damage);
-    int  rollAttack() const;
-    bool isAlive() const;
-    void display() const;
-
-    const std::string& getName() const;
-    int getHp() const;
+    Enemy(const std::string& name, Stats stats, int level) : 
+            Character(name, stats, level) {} ;
 
 private:
-    std::string name;
-    int hp;
-    int attack;
+    Action decideAction() const;  
+    // Additional enemy-specific attributes can be added here
+
 };
 
 #endif
